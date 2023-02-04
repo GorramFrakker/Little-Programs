@@ -1,3 +1,9 @@
+# Check if the ActiveDirectory module is installed
+if (!(Get-Module -Name ActiveDirectory)) {
+  # Install the ActiveDirectory module if it is not installed
+  Install-Module -Name ActiveDirectory
+}
+
 # Import the ActiveDirectory module
 Import-Module ActiveDirectory
 
@@ -22,6 +28,6 @@ foreach ($computer in $computers) {
   $computerList += $obj
 }
 
-# Export the array to a CSV file
+# Export the array to a CSV file on the C: drive
 $computerList | Export-Csv -Path "C:\computer_list.csv" -NoTypeInformation
 
