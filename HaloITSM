@@ -1,1 +1,27 @@
+# Import the ActiveDirectory module
+Import-Module ActiveDirectory
+
+# Search for all computer objects in Active Directory
+$computers = Get-ADComputer -Filter *
+
+# Create an array to store the data
+$computerList = @()
+
+# Loop through each computer object
+foreach ($computer in $computers) {
+  # Retrieve the computer's name and Dell Service Tag number
+  $computerName = $computer.Name
+  $serviceTag = (Get-WmiObject -Class Win32_BIOS -ComputerName $computerName).SerialNumber
+
+  # Create a custom object to store the computer's name and Service Tag
+  $obj = New-Object PSObject
+  $obj | Add-Member -MemberType NoteProperty -Name "ComputerName" -Value $computerName
+  $obj | Add-Member -MemberType NoteProperty -Name "ServiceTag" -Value $serviceTag
+
+  # Add the object to the array
+  $computerList += $obj
+}
+
+# Export the array to a CSV file
+$computerList | Export-Csv -Path "C:\computer_list.csv" -NoTypeInformation
 
