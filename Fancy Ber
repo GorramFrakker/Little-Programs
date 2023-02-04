@@ -53,9 +53,11 @@ dancing_bear_label.pack()
 Start GUI
 
 
-You can create the GUI by using the Tkinter library in Python. To create the GUI, you need to import the Tkinter library, define the main window (root), define variables to store the current running script and percentage of completion, define functions to run the PowerShell scripts, define widgets to display the current script, progress bar, start button, and dancing bear, and finally, start the GUI.
-
-Here's an example script for creating the GUI for a custom Microsoft Windows installation:
+#You can create the GUI by #using the Tkinter library in #Python. To create the GUI, you
+# need to import the Tkinter #library, define the main #window (root), define #variables to store the #current#running script and #percentage of completion, #define functions to run the #PowerShell scripts, define #widgets to display the current
+#script, progress bar, start #button, and dancing bear, and #finally, start the GUI.
+#
+#Here's an example script for #creating the GUI for a custom #Microsoft Windows #installation:
 
 import tkinter as tk
 import subprocess
@@ -100,12 +102,15 @@ dancing_bear_label.pack()
 
 root.mainloop()
 
-Here are the variables you might need to change in the script based on your requirements:
+#Here are the variables you #might need to change in the #script based on your #requirements:
 
-root.title: This sets the title of the main window. You can change it to any string you want.
-root.geometry: This sets the size of the main window. You can change it to any desired size.
-run_script function: You need to change the list of script.ps1 files in the run_script function based on the PowerShell scripts you want to run.
-dancing_bear: You need to change the file name of the dancing bear to match the name of your GIF file.
-The number of times the run_script function is repeated in the start_installation function. The number of times it should be repeated depends on the number of scripts you want to run.
+#root.title: This sets the #title of the main window. You #can change it to any string #you want.
+#root.geometry: This sets the #size of the main window. You #can change it to any desired #size.
+#run_script function: You need #to change the list of #script.ps1 files in the #run_script function based on #the PowerShell scripts you #want to run.
+#dancing_bear: You need to #change the file name of the #dancing bear to match the name
+#of your GIF file.
+#The number of times the #
+#run_script function is #repeated
+#in the start_installation #function. The number of times #it should be repeated depends #on the number of scripts you #want to run.
 
 
