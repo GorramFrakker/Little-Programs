@@ -1,36 +1,38 @@
-# Check if the ActiveDirectory module is installed
-if (!(Get-Module -Name ActiveDirectory)) {
-  # Install the ActiveDirectory module if it is not installed
-  Install-Module -Name ActiveDirectory
+if (!(Get-Module -ListAvailable -Name ActiveDirectory)) {
+    Install-Module -Name ActiveDirectory
 }
 
-# Import the ActiveDirectory module
 Import-Module ActiveDirectory
 
-# Search for all computer objects in Active Directory
 $computers = Get-ADComputer -Filter *
+$results = @()
 
-# Create an array to store the data
-$computerList = @()
-
-# Loop through each computer object
 foreach ($computer in $computers) {
-  # Retrieve the computer's name and Dell Service Tag number
-  $computerName = $computer.Name
-  $serviceTag = (Get-WmiObject -Class Win32_BIOS -ComputerName $computerName).SerialNumber
-
-  # Create a custom object to store the computer's name and Service Tag
-  $obj = New-Object PSObject
-  $obj | Add-Member -MemberType NoteProperty -Name "ComputerName" -Value $computerName
-  $obj | Add-Member -MemberType NoteProperty -Name "ServiceTag" -Value $serviceTag
-
-  # Add the object to the array
-  $computerList += $obj
+    $obj = New-Object PSObject
+    $obj | Add-Member -Type NoteProperty -Name "CustomerName" -Value "Batley Refreshments"
+    $obj | Add-Member -Type NoteProperty -Name "SiteName" -Value "Norwich"
+    $obj | Add-Member -Type NoteProperty -Name "DeviceType" -Value "Laptop"
+    $obj | Add-Member -Type NoteProperty -Name "AssetTag" -Value $computer.Name
+    $obj | Add-Member -Type NoteProperty -Name "User" -Value "Alan Smith"
+    $obj | Add-Member -Type NoteProperty -Name "Notes" -Value "test notes for device"
+    $obj | Add-Member -Type NoteProperty -Name "SLA" -Value "Our Example SLA 2"
+    $obj | Add-Member -Type NoteProperty -Name "Priority" -Value "Medium Effect"
+    $obj | Add-Member -Type NoteProperty -Name "Supplier" -Value "Asus"
+    $obj | Add-Member -Type NoteProperty -Name "WarrantyStartDate" -Value "1/1/19"
+    $obj | Add-Member -Type NoteProperty -Name "WarrantyEndDate" -Value "1/1/21"
+    $obj | Add-Member -Type NoteProperty -Name "LabourWarrantyStartDate" -Value "1/1/19"
+    $obj | Add-Member -Type NoteProperty -Name "LabourWarrantyEndDate" -Value "1/1/23"
+    $obj | Add-Member -Type NoteProperty -Name "SupplierSLA" -Value "Our Example SLA 2"
+    $obj | Add-Member -Type NoteProperty -Name "SupplierPriority" -Value "Low Effect"
+    $obj | Add-Member -Type NoteProperty -Name "SupplierStartDate" -Value ""
+    $obj | Add-Member -Type NoteProperty -Name "SupplierEndDate" -Value ""
+    $obj | Add-Member -Type NoteProperty -Name "SupplierReference" -Value ""
+    $obj | Add-Member -Type NoteProperty -Name "ParentTag" -Value "HANSDKHDF"
+    $obj | Add-Member -Type NoteProperty -Name "AFAccount Number" -Value "19268"
+    $results += $obj
 }
 
-# Export the array to a CSV file on the C: drive
-$computerList | Export-Csv -Path "C:\computer_list.csv" -NoTypeInformation
+$results | Export-Csv -Path "C:\Assets.csv" -NoTypeInformation
 
 
-This script exports the data in the $computerList array to a .csv file on the C: drive using the Export-Csv cmdlet, with the file path specified as C:\computer_list.csv. The -NoTypeInformation parameter is used to exclude the type information from the exported file.
-
+This script includes the required columns with default or placeholder values for the fields not included in the original output. The values can be updated as needed. The output is saved to C:\Assets.csv.
