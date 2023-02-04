@@ -1,6 +1,6 @@
-#ErrorGoByeBye
-#This program takes a screenshot #whenever Microsoft Access errors
-#out and emails it.
+ErrorGoByeBye
+This program takes a screenshot whenever Microsoft Access errors
+out and emails it.
 
 # Load the System.Drawing assembly
 [Reflection.Assembly]::LoadWithPartialName("System.Drawing") | Out-Null
