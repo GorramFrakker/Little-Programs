@@ -31,3 +31,6 @@ foreach ($computer in $computers) {
 # Export the array to a CSV file on the C: drive
 $computerList | Export-Csv -Path "C:\computer_list.csv" -NoTypeInformation
 
+
+This script exports the data in the $computerList array to a .csv file on the C: drive using the Export-Csv cmdlet, with the file path specified as C:\computer_list.csv. The -NoTypeInformation parameter is used to exclude the type information from the exported file.
+
