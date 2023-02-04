@@ -64,3 +64,6 @@ dancing_bear_label.pack()
 root.mainloop()
 
 
+#Note: You will need to replace #sender_email, receiver_email, #and sender_email_password with #the actual email address and #password of the sender.
+
+2 / 2
