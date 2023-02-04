@@ -45,3 +45,44 @@ Under the "Actions" tab, click on "New"
 Set the action to start a program, and enter the path to the PowerShell executable and the script file as the argument.
 Save the task and close the Task Scheduler.
 From now on, the script will run automatically whenever an error message appears, capturing a screenshot and sending it as an email.
+
+
+trigger the script whenever a Microsoft Access error occurs.
+
+the Windows Task Scheduler.
+Click on "Create Task".
+Enter a name for the task, such as "Microsoft Access Error Screenshot".
+Under the "Triggers" tab, click on "New".
+Set the trigger to run the task whenever a specific event is logged in the Windows Event Viewer. For example, you can set the trigger to run whenever an error event with the source "Microsoft Access" is logged.
+Under the "Actions" tab, click on "New".
+Set the action to start a program, and enter the path to the PowerShell executable and the script file as the argument.
+Save the task and close the Task Scheduler.
+From now on, the script will run automatically whenever a Microsoft Access error occurs, capturing a screenshot and sending it as an email.
+
+Delpoy as GPO.
+
+# Create the script file
+$ScriptPath = "$env:SystemDrive\Scripts\ErrorScreenshot.ps1"
+$ScriptContent = @"
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+$ImagePath = "$env:SystemDrive\Scripts\ErrorScreenshot.png"
+
+# Capture screenshot
+$bmp = New-Object System.Drawing.Bitmap(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+$gfx = [System.Drawing.Graphics]::FromImage($bmp)
+$gfx.CopyFromScreen(0,0,0,0,$bmp.Size)
+$bmp.Save($ImagePath, [System.Drawing.Imaging.ImageFormat]::Png)
+
+# Send email
+$From = "error.screenshot@example.com"
+$To = "administrator@example.com"
+$Subject = "Error Screenshot"
+$SMTPServer = "smtp.example.com"
+$Body = "An error has occurred. Please find attached screenshot of the error message."
+$Attachment = $ImagePath
+
+Send-MailMessage -From $From -To $To -Subject $Subject
+
+
