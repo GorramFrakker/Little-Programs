@@ -1,66 +1,8 @@
-
-Import required modules
-
 import tkinter as tk
 import subprocess
-
-Define main window
-
-root = tk.Tk()
-root.title("Custom Microsoft Windows Installation")
-root.geometry("600x400")
-
-Define variables
-
-current_script = tk.StringVar()
-percent_complete = tk.DoubleVar()
-
-Define functions
-
-def run_script(script):
-subprocess.call(["powershell.exe", script])
-
-def start_installation():
-run_script("script1.ps1")
-current_script.set("Script 1")
-percent_complete.set(10)
-root.update()
-run_script("script2.ps1")
-current_script.set("Script 2")
-percent_complete.set(20)
-root.update()
-run_script("script3.ps1")
-current_script.set("Script 3")
-percent_complete.set(30)
-root.update()
-# Repeat for remaining scripts
-
-Define widgets
-
-current_script_label = tk.Label(root, textvariable=current_script)
-current_script_label.pack()
-
-progress_bar = tk.ttk.Progressbar(root, orient="horizontal", length=400, mode="determinate", maximum=100, variable=percent_complete)
-progress_bar.pack()
-
-start_button = tk.Button(root, text="Start Installation", command=start_installation)
-start_button.pack()
-
-dancing_bear = tk.PhotoImage(file="dancing_bear.gif")
-dancing_bear_label = tk.Label(root, image=dancing_bear)
-dancing_bear_label.pack()
-
-Start GUI
-
-
-#You can create the GUI by #using the Tkinter library in #Python. To create the GUI, you
-# need to import the Tkinter #library, define the main #window (root), define #variables to store the #current#running script and #percentage of completion, #define functions to run the #PowerShell scripts, define #widgets to display the current
-#script, progress bar, start #button, and dancing bear, and #finally, start the GUI.
-#
-#Here's an example script for #creating the GUI for a custom #Microsoft Windows #installation:
-
-import tkinter as tk
-import subprocess
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 root = tk.Tk()
 root.title("Custom Microsoft Windows Installation")
@@ -71,6 +13,24 @@ percent_complete = tk.DoubleVar()
 
 def run_script(script):
     subprocess.call(["powershell.exe", script])
+
+def send_email(subject, body):
+    sender_email = "sender@email.com"
+    receiver_email = "receiver@email.com"
+    password = "sender_email_password"
+
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+    message.attach(MIMEText(body, "plain"))
+
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.ehlo()
+    server.starttls()
+    server.login(sender_email, password)
+    server.sendmail(sender_email, receiver_email, message.as_string())
+    server.quit()
 
 def start_installation():
     run_script("script1.ps1")
@@ -86,6 +46,7 @@ def start_installation():
     percent_complete.set(30)
     root.update()
     # Repeat for remaining scripts
+    send_email("Custom Windows Installation Complete", "The installation process has completed successfully.")
 
 current_script_label = tk.Label(root, textvariable=current_script)
 current_script_label.pack()
@@ -101,16 +62,5 @@ dancing_bear_label = tk.Label(root, image=dancing_bear)
 dancing_bear_label.pack()
 
 root.mainloop()
-
-#Here are the variables you #might need to change in the #script based on your #requirements:
-
-#root.title: This sets the #title of the main window. You #can change it to any string #you want.
-#root.geometry: This sets the #size of the main window. You #can change it to any desired #size.
-#run_script function: You need #to change the list of #script.ps1 files in the #run_script function based on #the PowerShell scripts you #want to run.
-#dancing_bear: You need to #change the file name of the #dancing bear to match the name
-#of your GIF file.
-#The number of times the #
-#run_script function is #repeated
-#in the start_installation #function. The number of times #it should be repeated depends #on the number of scripts you #want to run.
 
 
