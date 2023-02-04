@@ -25,12 +25,13 @@ $port = 587
 # Send the email with the attachment
 Send-MailMessage -From $from -To $to -Subject $subject -Body $body -SmtpServer $smtpServer -Port $port -UseSsl -Credential (Get-Credential) -Attachments $filePath
 
-#This script captures a #screenshot of the entire screen
-#and sends it as an email #whenever it is run. To #integrate it with Windows Error
-# Reporting, you'll need to #schedule the script to run #automatically using the Windows #Task Scheduler whenever an #error message appears.
+This script captures a screenshot of the entire screen
+and sends it as an email whenever it is run. To integrate it with Windows Error
+Reporting, you'll need to schedule the script to run automatically using the Windows Task Scheduler whenever an error message appears.
 
-#Note: You'll need to replace #the $from, $to, $smtpServer, #and other variables with the #appropriate values for your #email setup, and specify valid #login credentials for the email #account being used to send the #email.
+Note: You'll need to replace the $from, $to, $smtpServer, #and other variables with the appropriate values for your email setup, and specify valid login credentials for the email account being used to send the email.
 
-#Windows Task Scheduler Creation.
-#This will make thos all automatic.
+Windows Task Scheduler Creation.
+This will make thos all automatic.
+
 
