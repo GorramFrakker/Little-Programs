@@ -1,2 +1,4 @@
 #ErrorGoByeBye
-#t
+#This program takes a screenshot #whenever Microsoft Access errors
+#out and emails it.
+
