@@ -2,3 +2,33 @@ sendShotstosupport
 This will capture a screen whenever Microsoft access generates an error. Tbe resulting screenshot os the. emailed to support.
 
 
+Deploy via GPO
+
+# Create the script file
+$ScriptPath = "$env:SystemDrive\Scripts\ErrorScreenshot.ps1"
+$ScriptContent = @"
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+$ImagePath = "$env:SystemDrive\Scripts\ErrorScreenshot.png"
+
+# Capture screenshot
+$bmp = New-Object System.Drawing.Bitmap(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+$gfx = [System.Drawing.Graphics]::FromImage($bmp)
+$gfx.CopyFromScreen(0,0,0,0,$bmp.Size)
+$bmp.Save($ImagePath, [System.Drawing.Imaging.ImageFormat]::Png)
+
+# Send email
+$From = "error.screenshot@example.com"
+$To = "administrator@example.com"
+$Subject = "Error Screenshot"
+$SMTPServer = "smtp.example.com"
+$Body = "An error has occurred. Please find attached screenshot of the error message."
+$Attachment = $ImagePath
+
+Send-MailMessage -From $From -To $To -Subject $Subject
+
+
+
+
+
