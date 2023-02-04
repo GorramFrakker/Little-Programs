@@ -32,3 +32,51 @@ Send-MailMessage -From $From -To $To -Subject $Subject
 
 
 
+Script deployment tool to create the Windows Task Scheduler task on remote computers
+
+# Define script file and task information
+$ScriptPath = "$env:SystemDrive\Scripts\ErrorScreenshot.ps1"
+$ScriptContent = @"
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+$ImagePath = "$env:SystemDrive\Scripts\ErrorScreenshot.png"
+
+# Capture screenshot
+$bmp = New-Object System.Drawing.Bitmap(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height)
+$gfx = [System.Drawing.Graphics]::FromImage($bmp)
+$gfx.CopyFromScreen(0,0,0,0,$bmp.Size)
+$bmp.Save($ImagePath, [System.Drawing.Imaging.ImageFormat]::Png)
+
+# Send email
+$From = "error.screenshot@example.com"
+$To = "administrator@example.com"
+$Subject = "Error Screenshot"
+$SMTPServer = "smtp.example.com"
+$Body = "An error has occurred. Please find attached screenshot of the error message."
+$Attachment = $ImagePath
+
+Send-MailMessage -From $From -To $To -Subject $Subject
+"@
+
+$TaskName = "Microsoft Access Error Screenshot"
+$Trigger = New-ScheduledTaskTrigger -AtLogon
+$Action = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument "-File $ScriptPath"
+
+# Get list of target computers
+$Computers = Get-Content -Path "C:\Computers.txt"
+
+# Loop through each computer and create the task
+foreach ($Computer in $Computers) {
+    # Copy script file to target computer
+    Copy-Item -Path $ScriptPath -Destination "\\$Computer\$ScriptPath" -Force
+
+    # Connect to target computer and create the task
+    Invoke-Command -ComputerName $Computer -ScriptBlock {
+        Register-ScheduledTask -TaskName $Using:TaskName -Trigger $Using:Trigger -Action $Using:Action
+    }
+}
+
+In this script, the list of target computers is read from a text file named Computers.txt in the root of the C: drive. You'll need to modify the script to suit your specific needs, such as changing the email addresses, SMTP server, and script file paths as necessary
+
+
